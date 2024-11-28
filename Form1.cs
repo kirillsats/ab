@@ -109,41 +109,51 @@ namespace Andmebass_TARpv23
         {
             try
             {
-                ID = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["Id"].Value);
-                if (ID != 0)
+                // Проверяем, что есть выбранная строка
+                if (dataGridView1.SelectedRows.Count > 0)
                 {
-                    conn.Open();
-                    cmd = new SqlCommand("DELETE FROM Toode WHERE Id=@id", conn);
-                    cmd.Parameters.AddWithValue("@id", ID);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
+                    ID = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["Id"].Value);
+                    string fileName = dataGridView1.SelectedRows[0].Cells["Pilt"].Value.ToString();
 
-                    // Удаляем файл
-                    Kustuta_fail(dataGridView1.SelectedRows[0].Cells["Pilt"].Value.ToString());
+                    if (ID != 0)
+                    {
+                        conn.Open();
+                        cmd = new SqlCommand("DELETE FROM Toode WHERE Id=@id", conn);
+                        cmd.Parameters.AddWithValue("@id", ID);
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
 
-                    Emaldamine();
-                    NaitaAndmed();
+                        // Удаляем файл
+                        Kustuta_fail(fileName);
 
-                    MessageBox.Show("Nimekirja on kustutanud", "Kustutamine");
+                        Emaldamine();
+                        NaitaAndmed();
+
+                        MessageBox.Show("Tood on kustutanud", "Kustutamine");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Valige toode kustutamiseks.", "Viga");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Kustutamiseks viga: {ex.Message}");
+                MessageBox.Show($"Kustutamiseks viga: {ex.Message}", "Viga");
             }
         }
 
-        private void Kustuta_fail(string file)
+        private void Kustuta_fail(string fileName)
         {
             try
             {
                 // Полный путь к файлу
-                string filePath = Path.Combine(Path.GetFullPath(@"..\..\Pildid"), file);
+                string filePath = Path.Combine(Path.GetFullPath(@"..\..\Pildid"), fileName);
 
                 // Проверяем, существует ли файл
                 if (File.Exists(filePath))
                 {
-                    // Сбрасываем картинку в PictureBox
+                    // Освобождаем картинку в PictureBox
                     pictureBox1.Image?.Dispose();
                     pictureBox1.Image = null;
 
@@ -153,9 +163,10 @@ namespace Andmebass_TARpv23
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Kustutamiseks viga: {ex.Message}");
+                MessageBox.Show($"Kustutamiseks viga: {ex.Message}", "Viga");
             }
         }
+
 
         private void Uuenda_btn_Click(object sender, EventArgs e)
         {
@@ -230,28 +241,30 @@ namespace Andmebass_TARpv23
             open = new OpenFileDialog();
             open.InitialDirectory = @"C:\Users\opilane\Pictures\";
             open.Multiselect = false;
-            open.Filter = "Images Files(*.jpeg;*.png;*.bmp;*.jpg)|*.jpeg;*.png;*.bmp;*.jpg";
+            open.Filter = "Image Files(*.jpeg;*.png;*.bmp;*.jpg)|*.jpeg;*.png;*.bmp;*.jpg";
 
             if (open.ShowDialog() == DialogResult.OK)
             {
+                // Получаем расширение файла
                 extension = Path.GetExtension(open.FileName);
 
-                save = new SaveFileDialog();
-                save.InitialDirectory = Path.GetFullPath(@"..\..\Pildid");
-                save.FileName = Nimetus_txt.Text + extension;
-                save.Filter = "Images" + extension + "|" + extension;
+                // Сохраняем изображение в папке "Pildid"
+                string targetPath = Path.Combine(Path.GetFullPath(@"..\..\Pildid"), Nimetus_txt.Text + extension);
+                File.Copy(open.FileName, targetPath, true); // Перезапись разрешена
 
-                if (save.ShowDialog() == DialogResult.OK)
-                {
-                    File.Copy(open.FileName, save.FileName, true); // Добавлен overwrite=true
-                    pictureBox1.Image = Image.FromFile(save.FileName);
-                }
+                // Отображаем выбранное изображение в PictureBox
+                pictureBox1.Image = Image.FromFile(targetPath);
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+
+                // Сохраняем путь для последующего добавления в базу данных
+                Hind_txt.Tag = Nimetus_txt.Text + extension; // Временно храним путь в "Tag"
             }
             else
             {
-                MessageBox.Show("Pildi valik katkestati", "Teade");
+                MessageBox.Show("Kustutamine.", "Kustutamine");
             }
         }
+
         private void dataGridView1_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == 4)

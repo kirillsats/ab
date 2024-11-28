@@ -10,3 +10,15 @@ C:\Users\opilane\Source\Repos\Andmebass\obj\Debug\Andmebass_TARpv23.csproj.Gener
 C:\Users\opilane\Source\Repos\Andmebass\obj\Debug\Andmebass_TARpv23.csproj.CoreCompileInputs.cache
 C:\Users\opilane\Source\Repos\Andmebass\obj\Debug\Andmebass_TARpv23.exe
 C:\Users\opilane\Source\Repos\Andmebass\obj\Debug\Andmebass_TARpv23.pdb
+C:\Users\opilane\Source\Repos\ab_\bin\Debug\Andmebaas1.mdf
+C:\Users\opilane\Source\Repos\ab_\bin\Debug\Andmebaas1_log.ldf
+C:\Users\opilane\Source\Repos\ab_\bin\Debug\Andmebass_TARpv23.exe.config
+C:\Users\opilane\Source\Repos\ab_\bin\Debug\Andmebass_TARpv23.exe
+C:\Users\opilane\Source\Repos\ab_\bin\Debug\Andmebass_TARpv23.pdb
+C:\Users\opilane\Source\Repos\ab_\obj\Debug\Andmebass_TARpv23.csproj.AssemblyReference.cache
+C:\Users\opilane\Source\Repos\ab_\obj\Debug\Andmebass_TARpv23.Form1.resources
+C:\Users\opilane\Source\Repos\ab_\obj\Debug\Andmebass_TARpv23.Properties.Resources.resources
+C:\Users\opilane\Source\Repos\ab_\obj\Debug\Andmebass_TARpv23.csproj.GenerateResource.cache
+C:\Users\opilane\Source\Repos\ab_\obj\Debug\Andmebass_TARpv23.csproj.CoreCompileInputs.cache
+C:\Users\opilane\Source\Repos\ab_\obj\Debug\Andmebass_TARpv23.exe
+C:\Users\opilane\Source\Repos\ab_\obj\Debug\Andmebass_TARpv23.pdb
